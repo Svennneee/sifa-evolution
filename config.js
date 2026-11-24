@@ -6,6 +6,6 @@
 // ─────────────────────────────────────────────────────────────
 window.SIFA_CONFIG = {
   supabaseUrl: "https://aptgwscqvdftwqvpkgeo.supabase.co",          // z. B. "https://abcdefgh.supabase.co"
-  supabaseAnonKey: "sb_publishable_Wr0cbui57eEpx0ZueS_Zrg_NDBtl8l_",      // der "anon" / "publishable" Key (öffentlich, KEIN service_role!)
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwdGd3c2NxdmRmdHdxdnBrZ2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1MTkzODIsImV4cCI6MjExMTA5NTM4Mn0.HmJpCAbX3fLRpA5GuUUhBibZW4IEI3Algr_nI1gGWEE",      // der "anon" / "publishable" Key (öffentlich, KEIN service_role!)
   room: "sifa-stuttgart-2026-11-25"  // muss zum Raum in supabase-setup.sql passen
 };
