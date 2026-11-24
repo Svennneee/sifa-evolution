@@ -850,7 +850,7 @@ async function ensureMap(){
  try{if(!window.L)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js')}catch(e){$('#map').innerHTML='<div class="mapmsg">Die Karte konnte nicht geladen werden. Die Stationen findest du unten – mit Google-Maps-Links.</div>';return}
  $('#map').innerHTML='';
  map=L.map('map',{zoomControl:true,attributionControl:true}).setView([48.79,9.20],13);
- L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,className:'darktiles',attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'}).addTo(map);
  layer=L.layerGroup().addTo(map);
  map.on('click',e=>{if(!picking)return;const id=picking;picking=null;document.body.classList.remove('picking');
   const v=venue(id);const cur=S.venues[id]||{};store.put('venues',id,{...cur,kind:v?v.kind:'resto',lat:+e.latlng.lat.toFixed(6),lng:+e.latlng.lng.toFixed(6),setBy:me||null,ts:now()});
