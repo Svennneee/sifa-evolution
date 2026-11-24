@@ -543,7 +543,11 @@ function supaStore(){
  };
  return {mode:'supabase',label:'Live',
   async init(){
-   await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js');
+   if(!window.supabase||!window.supabase.createClient){
+    try{await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1')}
+    catch(e){await loadScript('https://unpkg.com/@supabase/supabase-js@2.49.1/dist/umd/supabase.js')}
+   }
+   if(!window.supabase||!window.supabase.createClient)throw new Error('Supabase-Bibliothek nicht geladen');
    sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:false}});
    await fullLoad();
    sb.channel('sifa-'+ROOM).on('postgres_changes',{event:'*',schema:'public',table:'sifa_items'},p=>{
@@ -585,7 +589,7 @@ function claudeStore(db){
 }
 
 async function pickStore(){
- if(CFG.supabaseUrl&&CFG.supabaseAnonKey){try{const s=supaStore();await s.init();return s}catch(e){console.error(e);toast('Supabase nicht erreichbar – Demo-Modus aktiv. Prüfe config.js.')}}
+ if(CFG.supabaseUrl&&CFG.supabaseAnonKey){try{const s=supaStore();await s.init();return s}catch(e){console.error(e);toast('Supabase nicht erreichbar – Demo-Modus aktiv. Grund: '+esc((e&&(e.message||e.msg||e.code))||String(e)),'',12000)}}
  if(window.claude&&typeof window.claude.use==='function'){
   try{const db=await Promise.race([window.claude.use('db'),sleep(10000).then(()=>null)]);if(db){const s=claudeStore(db);await s.init();return s}}catch(e){}
  }
