@@ -280,13 +280,56 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
 @keyframes tin{from{transform:translateY(-20px) scale(.9);opacity:0}}
 
 /* Level-up overlay */
-#lvlup{position:fixed;inset:0;z-index:400;display:none;place-items:center;text-align:center;background:radial-gradient(circle at 50% 45%,var(--lc,#ffc21a) 0,#0000 55%),#05040af0;overflow:hidden}
+#lvlup{position:fixed;inset:0;z-index:400;display:none;place-items:center;text-align:center;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--lc,#ffc21a) 70%,transparent) 0,#0000 50%),#05040af0;overflow:hidden}
 #lvlup.on{display:grid;animation:flash .9s ease}
 #lvlup .burst{position:absolute;inset:-50%;background:repeating-conic-gradient(from 0deg,var(--lc) 0 4deg,transparent 4deg 14deg);opacity:.25;animation:spin 8s linear infinite}
 #lvlup .in{position:relative;animation:shake .5s 2}
-#lvlup .big{font-family:Bangers;font-size:clamp(60px,16vw,120px);line-height:.9;color:#fff;text-shadow:0 0 30px var(--lc),0 6px 0 #000}
+#lvlup .big{font-family:Bangers;font-size:clamp(42px,11vw,86px);line-height:.95;color:#fff;text-shadow:0 0 24px #000,0 0 30px var(--lc),0 5px 0 #000;max-width:92vw;margin:0 auto;text-wrap:balance}
 #lvlup .t{font-family:Bangers;font-size:clamp(30px,7vw,48px);color:var(--lc);text-shadow:0 3px 0 #000}
 #lvlup p{margin:6px 0 0;font-size:17px}
+#lvlup .who{font-weight:700;font-size:18px;margin-bottom:4px;color:#fff}
+#lvlup .lvav{display:inline-block;transform-origin:50% 90%}
+#lvlup .fxl{position:absolute;inset:0;pointer-events:none}
+/* individuelle Stufen-Animationen */
+.fx-peek .lvav{animation:peek 1.6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes peek{0%{transform:translateX(-70vw) rotate(-25deg)}45%{transform:translateX(-30px) rotate(-18deg)}60%{transform:translateX(-30px) rotate(-18deg)}100%{transform:none}}
+.fx-march .lvav{animation:march .5s ease-in-out 6 alternate}
+@keyframes march{from{transform:translate(-26px,0) rotate(-6deg)}50%{transform:translate(0,-14px)}to{transform:translate(26px,0) rotate(6deg)}}
+.fx-diploma .lvav{animation:diploma 1.3s cubic-bezier(.2,1.2,.4,1)}
+@keyframes diploma{from{transform:scale(0) rotate(-720deg)}to{transform:none}}
+.fx-glitch .lvav{animation:glitch .18s steps(2) 10}
+.fx-glitch .big{animation:glitchT .15s steps(2) 12}
+@keyframes glitch{0%{transform:translate(4px,-2px);filter:drop-shadow(-6px 0 #ff00d4) drop-shadow(6px 0 #00f0ff)}50%{transform:translate(-5px,2px) skewX(8deg);filter:drop-shadow(6px 0 #ff00d4) drop-shadow(-6px 0 #00f0ff)}100%{transform:none}}
+@keyframes glitchT{0%{transform:translate(-4px,0);color:#00f0ff}50%{transform:translate(4px,0);color:#ff00d4}}
+.fx-bubble .lvav,.fx-toxic .lvav{animation:wobble 1.1s ease-in-out 3}
+@keyframes wobble{25%{transform:scale(1.08,.92)}50%{transform:scale(.94,1.08)}75%{transform:scale(1.04,.96)}}
+.fx-toxic .fxl{background:repeating-linear-gradient(-45deg,#ffd60022 0 26px,#0000 26px 52px);animation:stripes 1s linear infinite}
+@keyframes stripes{to{background-position:74px 0}}
+.fx-snow .lvav{animation:sugar 2s ease-out}
+@keyframes sugar{from{filter:brightness(3) saturate(0);transform:translateY(-40px)}to{filter:none;transform:none}}
+.fx-siren .fxl{animation:siren .4s steps(2) 10}
+@keyframes siren{0%{background:radial-gradient(circle at 0 0,#ff1a1a88,#0000 60%)}50%{background:radial-gradient(circle at 100% 0,#ff8a0088,#0000 60%)}}
+.fx-siren .lvav{animation:shake .25s 8}
+.fx-dizzy .lvav{animation:dizzy 1.4s ease-in-out 3}
+@keyframes dizzy{25%{transform:rotate(-14deg) translateX(-10px)}75%{transform:rotate(14deg) translateX(10px)}}
+.fx-dizzy .in{filter:blur(.4px)}
+.fx-talk .lvav{animation:talk .35s ease-in-out 8 alternate}
+@keyframes talk{to{transform:scale(1.07) rotate(3deg)}}
+.fx-crash .lvav{animation:crash 1.2s cubic-bezier(.5,0,.6,1)}
+@keyframes crash{0%{transform:translateY(-110vh) rotate(160deg)}55%{transform:translateY(0) rotate(0)}65%{transform:scale(1.25,.7)}80%{transform:translateY(-30px)}100%{transform:none}}
+.fx-crash .in{animation:shake .12s 10 1.1s}
+.fx-scan .fxl::after{content:"";position:absolute;left:0;right:0;height:6px;background:linear-gradient(90deg,#0000,var(--lc),#fff,var(--lc),#0000);box-shadow:0 0 30px var(--lc);animation:scan 1.1s ease-in-out 3}
+@keyframes scan{from{top:15%}50%{top:80%}to{top:15%}}
+.fx-hearts .lvav{animation:beat .6s ease-in-out 5}
+@keyframes beat{30%{transform:scale(1.15)}60%{transform:scale(.97)}}
+.fx-rise .lvav{animation:rise 2.2s ease-out}
+@keyframes rise{from{transform:translateY(80px) scale(.6);opacity:0}60%{transform:translateY(-24px) scale(1.05);opacity:1}to{transform:none}}
+.fx-ultimate .lvav{animation:ultimate 3s ease-out}
+.fx-ultimate .big,.fx-ultimate .t{animation:rainbow 1.2s linear infinite}
+.fx-ultimate .burst{opacity:.6;animation-duration:2s;background:repeating-conic-gradient(from 0deg,#ff3b5c 0 4deg,#0000 4deg 10deg,#ffc21a 10deg 14deg,#0000 14deg 20deg,#38e1ff 20deg 24deg,#0000 24deg 30deg)}
+.fx-ultimate .in{animation:shake .3s 8}
+@keyframes ultimate{0%{transform:scale(0) rotate(-180deg);filter:brightness(5)}40%{transform:scale(1.4) rotate(10deg);filter:brightness(2)}100%{transform:none;filter:none}}
+@keyframes rainbow{to{filter:hue-rotate(360deg)}}
 @keyframes flash{0%{background-color:#fff}100%{}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes shake{25%{transform:translate(-6px,3px)}50%{transform:translate(5px,-4px)}75%{transform:translate(-3px,-2px)}}
@@ -334,6 +377,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
     <div class="cdline" id="cdline"></div>
   </div>
 
+  <div class="sec" id="approveSec"></div>
   <div class="sec" id="meSec"></div>
 
   <div class="sec">
@@ -358,7 +402,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
     <div class="grid2" id="roster"></div>
   </div>
   <div class="sec">
-    <header><h2 class="disp">Evolutionsstufen</h2></header>
+    <header><h2 class="disp">Evolutionsstufen</h2><span class="small mute">Antippen für die Animation</span></header>
     <div class="grid2" id="levelGuide"></div>
   </div>
 </section>
@@ -427,7 +471,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
 
 <nav class="tabs" aria-label="Hauptnavigation">
   <ul>
-    <li><a href="#basis" data-tab="basis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11 Q4 4 12 4 Q20 4 20 11 Z"/><path d="M2 11h20v3H2z"/><path d="M7 14v6h10v-6"/></svg>Basis</a></li>
+    <li><a href="#basis" data-tab="basis" style="position:relative"><span id="approveBadge" style="display:none;position:absolute;top:2px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--cy);color:#0a0912;font-size:11px;font-weight:800;place-items:center"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11 Q4 4 12 4 Q20 4 20 11 Z"/><path d="M2 11h20v3H2z"/><path d="M7 14v6h10v-6"/></svg>Basis</a></li>
     <li><a href="#ranking" data-tab="ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 20h18M6 20v-6h4v6M10 20V8h4v12M14 20v-9h4v9"/><path d="M12 2l1 2 2 .3-1.5 1.4.4 2.1L12 6.8 10.1 7.8l.4-2.1L9 4.3 11 4z"/></svg>Ranking</a></li>
     <li><a href="#plan" data-tab="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8l1.5 1.5L12 7M8 14l1.5 1.5L12 13M14 8h3M14 14h3"/></svg>Plan</a></li>
     <li><a href="#karte" data-tab="karte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Karte</a></li>
@@ -437,7 +481,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
 
 <div class="modal" id="modal" role="dialog" aria-modal="true"><div class="sheet" id="sheet"></div></div>
 <div id="toasts" aria-live="polite"></div>
-<div id="lvlup" data-act="closeLvl"><div class="burst"></div><div class="in" id="lvlIn"></div></div>
+<div id="lvlup" data-act="closeLvl"><div class="burst"></div><div class="fxl"></div><div class="in" id="lvlIn"></div></div>
 <canvas id="confetti"></canvas>
 
 <script src="config.js"></script>
@@ -466,14 +510,33 @@ const EVENT_END=EVENT_START+14*3600e3;
 const COLS=['people','drinks','votes','comments','activity','options','venues'];
 
 const LEVELS=[
- {n:1,name:'Normalzustand',sub:'Sifa im Ruhemodus. Helm sitzt, Puls bei 60.',min:0,c:'#c9c5e6',helm:'#f2f2f7',eye:'#1b1b22'},
- {n:2,name:'Super-Sifa',sub:'Die Warnweste beginnt von innen zu leuchten.',min:1,c:'#ffc21a',helm:'#ffd23f',eye:'#11a3c4'},
- {n:3,name:'Super-Sifa II',sub:'Elektrische Entladungen. Bitte Abstand halten.',min:3,c:'#ffc21a',helm:'#ffd23f',eye:'#11a3c4'},
- {n:4,name:'Super-Sifa III',sub:'Aura länger als jede Betriebsanweisung.',min:5,c:'#ffb000',helm:'#ffc21a',eye:'#0f8fb0'},
- {n:5,name:'Sifa-Gott',sub:'Ruhig. Rot. Unfassbar kompetent.',min:7,c:'#ff3b5c',helm:'#ff3b5c',eye:'#c4103a'},
- {n:6,name:'Sifa-Blau',sub:'Göttliche Energie trifft DGUV-Vorschrift.',min:9,c:'#2fb8ff',helm:'#36c9ff',eye:'#0a7fd1'},
- {n:7,name:'Ultra-Instinkt',sub:'Erkennt Gefährdungen, bevor sie entstehen.',min:12,c:'#dfe6ff',helm:'#e9eeff',eye:'#bfc8ff'}
-];
+ {d:1,name:'Rookie',sub:'Frisch aus der Vorlesung, Helm noch originalverpackt.',t:1,c:'#c9c5e6',helm:'#f2f2f7',eye:'#1b1b22'},
+ {d:2,name:'Schultergucker',sub:'Schaut erst mal den anderen über die Schulter.',t:2,c:'#ffc21a',helm:'#ffd23f',eye:'#11a3c4'},
+ {d:3,name:'Mitläufer',sub:'Läuft mit. Hauptsache dabei.',t:2,c:'#ffb000',helm:'#ffc21a',eye:'#11a3c4'},
+ {d:4,name:'Sifa-Lehrgänger',sub:'Hat den Lehrgang gebucht und vor allem die Pausen genossen.',t:3,c:'#ffc21a',helm:'#ffd23f',eye:'#0f8fb0'},
+ {d:5,name:'KI-Champion',sub:'Lässt die Gefährdungsbeurteilung vom Chatbot schreiben.',t:3,c:'#38e1ff',helm:'#7cefff',eye:'#0a7fd1'},
+ {d:6,name:'Gefahrstofftester',sub:'Testet jedes Sicherheitsdatenblatt persönlich.',t:4,c:'#8dff3a',helm:'#b6ff5c',eye:'#2c8a00'},
+ {d:7,name:'Christstollen',sub:'Saisonal, schwer und überraschend beliebt.',t:4,c:'#ffe7a8',helm:'#fff3d1',eye:'#a8701c'},
+ {d:8,name:'Meldepflichtig',sub:'Ab hier muss die Berufsgenossenschaft informiert werden.',t:4,c:'#ff6a00',helm:'#ff8a2a',eye:'#b33a00'},
+ {d:9,name:'Langzeitkrank',sub:'Morgen? Vermutlich nicht im Büro.',t:5,c:'#c4e86a',helm:'#d7f28c',eye:'#6b8a12'},
+ {d:10,name:'BEM-Gespräch',sub:'Ein Gespräch zur Wiedereingliederung wird angeboten.',t:5,c:'#b26bff',helm:'#c99bff',eye:'#5a1fb3'},
+ {d:11,name:'Wegeunfall',sub:'Der Heimweg wird zum Sachverhalt.',t:5,c:'#ff3b5c',helm:'#ff5a76',eye:'#c4103a'},
+ {d:12,name:'Gefahrstofftester',sub:'Zweite Testreihe. Ergebnisse weiterhin unklar.',t:6,c:'#39ff88',helm:'#7dffb0',eye:'#00894a'},
+ {d:13,name:'Auditor',sub:'Prüft alles. Besonders die Getränkekarte.',t:6,c:'#2fb8ff',helm:'#36c9ff',eye:'#0a7fd1'},
+ {d:14,name:'Frauenarzt',sub:'Niemand weiß, wie es dazu kam.',t:6,c:'#ff5fc8',helm:'#ff8ad8',eye:'#b3127e'},
+ {d:15,name:'Lernbegleiter',sub:'Begleitet andere – vor allem zum Tresen.',t:6,c:'#38e1ff',helm:'#9af3ff',eye:'#0a7fd1'},
+ {d:20,name:'Der ultimative Lutz',sub:'Die höchste Form der Arbeitssicherheit. Es kann nur einen geben.',t:7,c:'#dfe6ff',helm:'#ffe066',eye:'#bfc8ff'}
+].map((l,i)=>({...l,n:i+1,min:l.d-1}));
+const D=L=>LEVELS[L-1].d;
+// Pro Stufe eigene Level-up-Animation: CSS-Effekt + Partikel
+const FX={2:{fx:'peek',shout:'Na, wer guckt denn da?',pt:{shape:'rect'}},3:{fx:'march',shout:'Im Gleichschritt, marsch!',pt:{shape:'rect'}},
+ 4:{fx:'diploma',shout:'Teilnahmebescheinigung erhalten!',pt:{shape:'paper',n:90}},5:{fx:'glitch',shout:'Prompt erfolgreich!',pt:{shape:'square',n:140}},
+ 6:{fx:'bubble',shout:'Achtung, Dämpfe!',pt:{shape:'ring',mode:'rise',n:70}},7:{fx:'snow',shout:'Puderzucker-Alarm!',pt:{shape:'circle',mode:'fall',n:220,colors:['#fff','#fff8e6','#ffe7a8']}},
+ 8:{fx:'siren',shout:'Sofort melden!',pt:{shape:'rect',colors:['#ff1a1a','#ff8a00','#fff']}},9:{fx:'dizzy',shout:'Gelber Schein in Sicht …',pt:{shape:'circle',mode:'fall',n:60}},
+ 10:{fx:'talk',shout:'Wir müssen reden.',pt:{shape:'bubble',n:40}},11:{fx:'crash',shout:'Bordsteinkante unterschätzt!',pt:{shape:'rect',n:200}},
+ 12:{fx:'toxic',shout:'Grenzwert überschritten!',pt:{shape:'ring',mode:'rise',n:130}},13:{fx:'scan',shout:'Abweichung festgestellt!',pt:{shape:'check',n:60}},
+ 14:{fx:'hearts',shout:'Bitte frei machen … äh, Platz machen!',pt:{shape:'heart',n:90}},15:{fx:'rise',shout:'Lernziel erreicht!',pt:{shape:'star',mode:'rise',n:90}},
+ 16:{fx:'ultimate',shout:'Es kann nur einen geben!',pt:{shape:'star',n:320,colors:['#ff3b5c','#ffc21a','#38e1ff','#8dff3a','#b26bff','#fff']}}};
 const levelOf=n=>{let L=1;for(const l of LEVELS)if(n>=l.min)L=l.n;return L};
 
 const DRINKS=[
@@ -602,9 +665,14 @@ function setMode(state){const d=$('#modeDot');d.className='dot '+(state==='live'
 const people=()=>Object.entries(S.people).map(([id,p])=>({...p,id}));
 const person=id=>S.people[id]?{...S.people[id],id}:null;
 const nameOf=id=>(S.people[id]&&S.people[id].name)||'Unbekannt';
+// Bestätigung: Ein Getränk zählt erst, wenn mind. 1 andere Person bestätigt (und es mehr Ja als Nein gibt)
+function approvals(){const m={};for(const v of Object.values(S.votes)){if(!v||typeof v.poll!=='string'||v.poll.slice(0,3)!=='ok_')continue;const did=v.poll.slice(3);(m[did]=m[did]||[]).push(v)}return m}
+function drinkState(d,id,ap){const vs=(ap[id]||[]).filter(v=>v.pid!==d.pid);const ok=vs.filter(v=>v.choice==='ok'),no=vs.filter(v=>v.choice==='no');
+ return {ok,no,state:ok.length>=1&&ok.length>no.length?'ok':no.length>ok.length?'no':'pending'}}
+function allDrinks(){const ap=approvals();return Object.entries(S.drinks).filter(([,d])=>d&&d.pid).map(([id,d])=>({...d,id,...drinkState(d,id,ap)})).sort((a,b)=>a.ts-b.ts)}
 function drinkStats(){
- const by={};for(const [id,d] of Object.entries(S.drinks)){if(!d||!d.pid)continue;(by[d.pid]=by[d.pid]||[]).push({...d,id})}
- for(const k in by)by[k].sort((a,b)=>a.ts-b.ts);return by;
+ const by={};for(const d of allDrinks()){if(d.state!=='ok')continue;(by[d.pid]=by[d.pid]||[]).push(d)}
+ return by;
 }
 const countOf=(by,pid)=>(by[pid]||[]).length;
 function venues(){
@@ -630,16 +698,16 @@ function auraPath(L,k){const n=14+L*2,cx=60,cy=86,rx=(40+L*2.5)*k,ry=(54+L*4)*k;
  return d+'Z'}
 function avatar(p,L,size=96){
  const h=hash(p.id||p.name||'x'),skin=SKINS[h%SKINS.length],vest=VESTS[(h>>4)%VESTS.length],lv=LEVELS[L-1];
- const ini=esc(((p.name||'?').trim().charAt(0)||'?').toUpperCase()),gid='ag'+(++avc);
- let s=`<svg class="av lv${L}" viewBox="0 0 120 140" width="${size}" height="${Math.round(size*140/120)}" aria-hidden="true">`;
- if(L>1)s+=`<defs><radialGradient id="${gid}" cx="50%" cy="62%" r="58%"><stop offset="0" stop-color="${lv.c}" stop-opacity=".95"/><stop offset=".65" stop-color="${lv.c}" stop-opacity=".45"/><stop offset="1" stop-color="${lv.c}" stop-opacity="0"/></radialGradient></defs><g class="aura"><path d="${auraPath(L,1)}" fill="url(#${gid})"/><path d="${auraPath(L,.8)}" fill="${lv.c}" opacity=".28"/></g>`;
- if(L>=3)s+=`<path class="bolt" d="M16 52l9 8-6 2 9 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><path class="bolt b2" d="M104 60l-9 7 6 3-8 9" fill="none" stroke="${L>=6?'#bff1ff':'#fff7c2'}" stroke-width="2.2" stroke-linejoin="round"/>`;
- if(L>=4)[[22,96],[98,100],[30,30],[92,34],[60,14]].forEach(([x,y],i)=>s+=`<circle class="spark" style="animation-delay:${i*.25}s" cx="${x}" cy="${y}" r="${i%2?2:2.8}" fill="${L>=7?'#fff':lv.c}"/>`);
+ const T=lv.t;const ini=esc(((p.name||'?').trim().charAt(0)||'?').toUpperCase()),gid='ag'+(++avc);
+ let s=`<svg class="av lv${T}" viewBox="0 0 120 140" width="${size}" height="${Math.round(size*140/120)}" aria-hidden="true">`;
+ if(T>1)s+=`<defs><radialGradient id="${gid}" cx="50%" cy="62%" r="58%"><stop offset="0" stop-color="${lv.c}" stop-opacity=".95"/><stop offset=".65" stop-color="${lv.c}" stop-opacity=".45"/><stop offset="1" stop-color="${lv.c}" stop-opacity="0"/></radialGradient></defs><g class="aura"><path d="${auraPath(T,1)}" fill="url(#${gid})"/><path d="${auraPath(T,.8)}" fill="${lv.c}" opacity=".28"/></g>`;
+ if(T>=3)s+=`<path class="bolt" d="M16 52l9 8-6 2 9 10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><path class="bolt b2" d="M104 60l-9 7 6 3-8 9" fill="none" stroke="${T>=6?'#bff1ff':'#fff7c2'}" stroke-width="2.2" stroke-linejoin="round"/>`;
+ if(T>=4)[[22,96],[98,100],[30,30],[92,34],[60,14]].forEach(([x,y],i)=>s+=`<circle class="spark" style="animation-delay:${i*.25}s" cx="${x}" cy="${y}" r="${i%2?2:2.8}" fill="${T>=7?'#fff':lv.c}"/>`);
  s+=`<path d="M28 140L33 108Q36 95 60 93Q84 95 87 108L92 140Z" fill="${vest}"/><rect x="31.5" y="114" width="57" height="5" fill="#fff" opacity=".85"/><rect x="30" y="127" width="60" height="5" fill="#fff" opacity=".85"/><path d="M60 95V140" stroke="#0005" stroke-width="2"/>`;
  s+=`<rect x="53" y="84" width="14" height="12" rx="3" fill="${skin}"/><circle cx="60" cy="70" r="21" fill="${skin}"/>`;
- if(L===1)s+=`<circle cx="52.5" cy="74" r="2.4" fill="#1b1b22"/><circle cx="67.5" cy="74" r="2.4" fill="#1b1b22"/><path d="M54 81.5Q60 86 66 81.5" stroke="#1b1b22" fill="none" stroke-width="2" stroke-linecap="round"/>`;
+ if(T===1)s+=`<circle cx="52.5" cy="74" r="2.4" fill="#1b1b22"/><circle cx="67.5" cy="74" r="2.4" fill="#1b1b22"/><path d="M54 81.5Q60 86 66 81.5" stroke="#1b1b22" fill="none" stroke-width="2" stroke-linecap="round"/>`;
  else{const ec=lv.eye;s+=`<path d="M46.5 69.5L56.5 72" stroke="#1b1b22" stroke-width="2.6" stroke-linecap="round"/><path d="M73.5 69.5L63.5 72" stroke="#1b1b22" stroke-width="2.6" stroke-linecap="round"/>`;
-  s+=L>=7?`<ellipse cx="52.5" cy="75" rx="3.4" ry="2.3" fill="#eef2ff"/><ellipse cx="67.5" cy="75" rx="3.4" ry="2.3" fill="#eef2ff"/>`:`<ellipse cx="52.5" cy="75" rx="3.4" ry="2.4" fill="#fff"/><ellipse cx="67.5" cy="75" rx="3.4" ry="2.4" fill="#fff"/><circle cx="53.3" cy="75" r="1.7" fill="${ec}"/><circle cx="66.7" cy="75" r="1.7" fill="${ec}"/>`;
+  s+=T>=7?`<ellipse cx="52.5" cy="75" rx="3.4" ry="2.3" fill="#eef2ff"/><ellipse cx="67.5" cy="75" rx="3.4" ry="2.3" fill="#eef2ff"/>`:`<ellipse cx="52.5" cy="75" rx="3.4" ry="2.4" fill="#fff"/><ellipse cx="67.5" cy="75" rx="3.4" ry="2.4" fill="#fff"/><circle cx="53.3" cy="75" r="1.7" fill="${ec}"/><circle cx="66.7" cy="75" r="1.7" fill="${ec}"/>`;
   s+=`<path d="M54 83.5L66 82" stroke="#1b1b22" stroke-width="2" stroke-linecap="round"/>`}
  s+=`<path d="M37 65Q37 42 60 42Q83 42 83 65Z" fill="${lv.helm}"/><rect x="31" y="61" width="58" height="7" rx="3.5" fill="${lv.helm}"/><path d="M44 50Q50 45 56 44" stroke="#fff" stroke-opacity=".6" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="60" cy="54" r="7.5" fill="#0a0912" opacity=".88"/><text x="60" y="57.8" font-size="11" text-anchor="middle" fill="${lv.helm}" font-family="Bangers,Impact,sans-serif">${ini}</text>`;
  return s+'</svg>';
@@ -661,20 +729,44 @@ const requireMe=()=>{if(me&&S.people[me])return true;openLogin();return false};
 
 /* ================= Confetti ================= */
 const cv=$('#confetti'),cx=cv.getContext('2d');let parts=[],raf=0;
-function confetti(colors=['#ffc21a','#ff8a00','#38e1ff','#ff3b5c','#fff']){
+function confetti(colors=['#ffc21a','#ff8a00','#38e1ff','#ff3b5c','#fff'],o={}){
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;
- for(let i=0;i<160;i++)parts.push({x:innerWidth/2+(Math.random()-.5)*120,y:innerHeight*.45,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,r:Math.random()*6+3,c:colors[i%colors.length],a:Math.random()*6,va:(Math.random()-.5)*.4,life:0});
+ const n=o.n||160,mode=o.mode||'burst',shape=o.shape||'rect',W=innerWidth,H=innerHeight,rnd=Math.random;
+ for(let i=0;i<n;i++){const b={r:rnd()*6+(shape==='heart'||shape==='star'||shape==='bubble'?8:3),c:colors[i%colors.length],a:rnd()*6,va:(rnd()-.5)*.3,life:0,shape,max:mode==='burst'?160:260,delay:mode==='burst'?0:Math.floor(rnd()*90)};
+  if(mode==='rise')Object.assign(b,{x:rnd()*W,y:H+20,vx:(rnd()-.5)*1.2,vy:-(2+rnd()*3),g:-.02,sway:rnd()*6});
+  else if(mode==='fall')Object.assign(b,{x:rnd()*W,y:-20,vx:(rnd()-.5)*1,vy:1+rnd()*2,g:.01,sway:rnd()*6});
+  else Object.assign(b,{x:W/2+(rnd()-.5)*120,y:H*.45,vx:(rnd()-.5)*14,vy:-rnd()*14-4,g:.35});
+  parts.push(b)}
  if(!raf)raf=requestAnimationFrame(tick)}
+function drawP(p){const r=p.r;cx.fillStyle=p.c;cx.strokeStyle=p.c;cx.lineWidth=2;
+ switch(p.shape){
+  case'circle':cx.beginPath();cx.arc(0,0,r/2,0,7);cx.fill();break;
+  case'ring':cx.beginPath();cx.arc(0,0,r/1.4,0,7);cx.stroke();break;
+  case'square':cx.fillRect(-r/2,-r/2,r,r);break;
+  case'paper':cx.fillStyle='#fff';cx.fillRect(-r,-r*.7,r*2,r*1.4);cx.fillStyle=p.c;cx.fillRect(-r*.7,-r*.3,r*1.4,1.5);cx.fillRect(-r*.7,r*.1,r,1.5);break;
+  case'heart':cx.beginPath();cx.moveTo(0,r*.35);cx.bezierCurveTo(-r,-r*.3,-r*.5,-r,0,-r*.45);cx.bezierCurveTo(r*.5,-r,r,-r*.3,0,r*.35);cx.fill();break;
+  case'star':cx.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5,rr=i%2?r*.4:r;cx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}cx.closePath();cx.fill();break;
+  case'bubble':cx.beginPath();cx.ellipse(0,0,r*1.2,r*.8,0,0,7);cx.fill();cx.beginPath();cx.moveTo(-r*.3,r*.6);cx.lineTo(-r*.8,r*1.2);cx.lineTo(r*.1,r*.7);cx.fill();break;
+  case'check':cx.beginPath();cx.moveTo(-r*.6,0);cx.lineTo(-r*.1,r*.5);cx.lineTo(r*.7,-r*.5);cx.lineWidth=3;cx.stroke();break;
+  default:cx.fillRect(-r/2,-r/4,r,r/2)}}
 function tick(){cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);cx.clearRect(0,0,innerWidth,innerHeight);
- parts=parts.filter(p=>p.life<160&&p.y<innerHeight+20);
- for(const p of parts){p.life++;p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);cx.restore()}
+ parts=parts.filter(p=>p.life<p.max+p.delay&&p.y<innerHeight+40&&p.y>-60);
+ for(const p of parts){p.life++;if(p.life<p.delay)continue;p.vy+=p.g;p.vx*=.99;p.x+=p.vx+(p.sway?Math.sin(p.life/18)*p.sway*.08:0);p.y+=p.vy;p.a+=p.va;
+  cx.save();cx.translate(p.x,p.y);cx.rotate(p.shape==='heart'||p.shape==='bubble'||p.shape==='check'?Math.sin(p.a)*.4:p.a);cx.globalAlpha=Math.min(1,(p.max+p.delay-p.life)/30);drawP(p);cx.restore()}
  raf=parts.length?requestAnimationFrame(tick):0;if(!raf)cx.clearRect(0,0,innerWidth,innerHeight)}
 
-function showLevelUp(p,L){const lv=LEVELS[L-1];const o=$('#lvlup');o.style.setProperty('--lc',lv.c);
- $('#lvlIn').innerHTML=`<div class="big">Level up!</div>${avatar(p,L,200)}<div class="t">Level ${L} · ${esc(lv.name)}</div><p>${esc(lv.sub)}</p><p class="small mute">Tippen zum Schließen</p>`;
- o.classList.remove('on');void o.offsetWidth;o.classList.add('on');confetti([lv.c,'#fff',lv.c,'#ffc21a']);
- clearTimeout(showLevelUp.t);showLevelUp.t=setTimeout(()=>o.classList.remove('on'),5200)}
+let lvlQ=[],lvlBusy=false;
+function queueLevelUp(p,L,own){lvlQ.push({p,L,own});if(!lvlBusy)nextLevelUp()}
+function nextLevelUp(){const it=lvlQ.shift();if(!it){lvlBusy=false;return}lvlBusy=true;showLevelUp(it.p,it.L,it.own)}
+function closeLvl(){const o=$('#lvlup');if(!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showLevelUp.t);setTimeout(nextLevelUp,250)}
+function showLevelUp(p,L,own=true){const lv=LEVELS[L-1],f=FX[L]||FX[2];const o=$('#lvlup');o.style.setProperty('--lc',lv.c);
+ o.className='';
+ $('#lvlIn').innerHTML=`${own?'':`<div class="who">${esc(p.name)} transformiert!</div>`}<div class="big">${esc(f.shout)}</div><span class="lvav">${avatar(p,L,own?200:170)}</span><div class="t">Level ${D(L)} · ${esc(lv.name)}</div><p>${esc(lv.sub)}</p><p class="small mute">Tippen zum Schließen</p>`;
+ void o.offsetWidth;o.classList.add('on','fx-'+f.fx);
+ const pt=f.pt||{};confetti(pt.colors||[lv.c,'#fff',lv.c,lv.helm],pt);if(L===16)setTimeout(()=>confetti(pt.colors,{shape:'rect',n:200}),900);
+ if(navigator.vibrate)try{navigator.vibrate(L===16?[100,50,100,50,300]:[60,40,120])}catch(e){}
+ clearTimeout(showLevelUp.t);showLevelUp.t=setTimeout(closeLvl,own?(L===16?7000:5200):3800)}
 
 /* ================= Login / Profil ================= */
 function openLogin(){
@@ -690,7 +782,7 @@ function openProfile(id){
  const tally={};(by[id]||[]).forEach(d=>tally[d.k]=(tally[d.k]||0)+1);
  openModal(`<button class="x" data-act="closeModal" aria-label="Schließen">×</button>
   <div style="text-align:center">${avatar(p,L,150)}<h2 class="disp" style="margin-top:4px">${esc(p.name)}</h2>
-  <span class="lvl" style="color:${lv.c}">Level ${L} · ${esc(lv.name)}</span>
+  <span class="lvl" style="color:${lv.c}">Level ${D(L)} · ${esc(lv.name)}</span>
   <p class="mute" style="margin:8px 0">${esc(lv.sub)}</p>
   <div class="row" style="justify-content:center">${statusPill(p)}<span class="pill raus">${n} Getränk${n===1?'':'e'}</span><span class="pill raus">Power ${power(n,by[id]).toLocaleString('de-DE')}</span></div></div>
   <label class="lab">Programm</label><div class="chips">${STAGES.map(s=>`<span class="chip tiny ${p.segs&&p.segs[s.id]?'on':''}">${esc(s.short)}</span>`).join('')}</div>
@@ -712,6 +804,7 @@ function render(){
  const mp=me&&person(me);
  $('#meBtn').innerHTML=mp?avatar(mp,levelOf(countOf(by,me)),34):`<span class="btn sm">Anmelden</span>`;
  effects(by);
+ {const n=me?allDrinks().filter(d=>d.state!=='ok'&&d.pid!==me&&S.people[d.pid]&&!S.votes['ok_'+d.id+'__'+me]).length:0;const bd=$('#approveBadge');if(bd){bd.textContent=n;bd.style.display=n?'grid':'none'}}
  ({basis:rBasis,ranking:rRanking,plan:rPlan,karte:rKarte,stats:rStats}[tab]||rBasis)(by);
 }
 let rq=0;const schedule=()=>{if(!rq)rq=requestAnimationFrame(()=>{rq=0;render()})};
@@ -724,7 +817,7 @@ function effects(by){
  const leader=ranked.length&&(ranked.length===1||countOf(by,ranked[0].id)>countOf(by,ranked[1].id))?ranked[0].id:null;
  if(prevLevels){
   for(const id in lv){const was=prevLevels[id];if(was&&lv[id]>was){const p=person(id);
-   if(id===me)showLevelUp(p,lv[id]);else toast(`${avatar(p,lv[id],34)}<span><b>${esc(p.name)}</b> transformiert: Level ${lv[id]} · ${esc(LEVELS[lv[id]-1].name)}!</span>`,'gold')}}
+   if(id===me){queueLevelUp(p,lv[id],true);log('level',`${p.name} erreicht Level ${D(lv[id])}: ${LEVELS[lv[id]-1].name}!`)}else queueLevelUp(p,lv[id],false)}}
   if(leader&&leader!==prevLeader&&prevLeader!==undefined){toast(`<span>Neue Nummer 1 im Power-Ranking: <b>${esc(nameOf(leader))}</b></span>`,'gold');confetti()}
  }
  prevLevels=lv;prevLeader=leader;
@@ -738,10 +831,10 @@ function rBasis(by){
   if(!p){$('#meSec').innerHTML=`<div class="card"><div class="me"><div class="stage">${avatar({id:'gast',name:'?'},1,130)}</div><div><h3 class="disp">Noch kein Charakter</h3><p class="mute">Melde dich mit deinem Namen an, stimme ab und starte deine Evolution.</p><button class="btn" data-act="login">Jetzt einsteigen</button></div></div></div>`}
   else{
    const list=by[me]||[],n=list.length,L=levelOf(n),lv=LEVELS[L-1],nx=LEVELS[L]||null;
-   const pct=nx?Math.round((n-lv.min)/(nx.min-lv.min)*100):100;const tally={};list.forEach(d=>tally[d.k]=(tally[d.k]||0)+1);
+   const pct=nx?Math.round((n-lv.min)/(nx.min-lv.min)*100):100;const myOpen=allDrinks().filter(d=>d.pid===me&&d.state!=='ok').reverse();const tally={};list.forEach(d=>tally[d.k]=(tally[d.k]||0)+1);
    $('#meSec').innerHTML=`<div class="card">
     <div class="me"><div class="stage">${avatar(p,L,150)}</div>
-     <div><span class="lvl" style="color:${lv.c}">Level ${L} · ${esc(lv.name)}</span>
+     <div><span class="lvl" style="color:${lv.c}">Level ${D(L)} · ${esc(lv.name)}</span>
       <h3 class="disp">${esc(p.name)}</h3><div class="mute small">${esc(lv.sub)}</div>
       <div class="power"><div class="row" style="margin:0 0 6px"><span class="pl">${power(n,list).toLocaleString('de-DE')}</span><span class="mute small">Power-Level</span></div>
        <div class="bar"><i style="width:${pct}%"></i></div>
@@ -749,7 +842,8 @@ function rBasis(by){
      </div></div>
     ${p.out?`<div class="hint warn" style="margin-top:14px"><span>Du bist als ausgeschieden markiert. Gute Heimfahrt – oder doch noch nicht?</span></div><div class="row" style="margin-top:10px"><button class="btn cy" data-act="rejoin">Ich bin wieder da</button></div>`:`
     <div class="drinks">${DRINKS.map(d=>`<button class="dbtn ${d.af?'af':''}" data-act="drink" data-k="${d.k}">${drinkIcon(d.k)}${esc(d.l)}${tally[d.k]?`<span class="n">${tally[d.k]}</span>`:''}</button>`).join('')}</div>
-    <div class="row" style="margin-top:10px;justify-content:space-between"><span class="note" style="margin:0">Freiwillig, ohne Trinkzwang – alkoholfreie Getränke zählen genauso.</span>${n?'<button class="btn sm ghost" data-act="undo">Letztes rückgängig</button>':''}</div>`}
+    <div class="row" style="margin-top:10px;justify-content:space-between"><span class="note" style="margin:0">Freiwillig, ohne Trinkzwang – alkoholfreie Getränke zählen genauso. Jeder Eintrag zählt erst, wenn ihn jemand anderes bestätigt.</span>${allDrinks().some(d=>d.pid===me)?'<button class="btn sm ghost" data-act="undo">Letztes rückgängig</button>':''}</div>
+    ${myOpen.length?`<label class="lab">Warten auf Bestätigung / abgelehnt</label><div class="chips">${myOpen.map(d=>`<span class="chip tiny" style="${d.state==='no'?'border-color:#ff3b5c;color:#ff8aa0':''}">${esc(DK[d.k]?DK[d.k].l:d.k)} ${fmtT(d.ts)} · ${d.state==='no'?'abgelehnt':'offen'}${d.state==='no'?` <button class="linkbtn" style="min-height:0;padding:0;color:#ff8aa0" data-act="delDrink" data-id="${esc(d.id)}">entfernen</button>`:''}</span>`).join('')}</div>`:''}`}
     <label class="lab">Mein Status</label>
     <div class="seg" role="group" aria-label="Status">${[['dabei','Dabei',''],['vielleicht','Vielleicht','may'],['nein','Nicht dabei','no']].map(([v,l,c])=>`<button class="${c} ${p.status===v?'on':''}" data-act="status" data-v="${v}">${l}</button>`).join('')}</div>
     <label class="lab">Ich bin dabei bei …</label>
@@ -757,6 +851,15 @@ function rBasis(by){
     ${p.out?'':`<div class="row" style="margin-top:14px"><button class="btn sm ghost" data-act="leave">Ich verabschiede mich für heute</button></div>`}
    </div>`;
   }
+  // Bestätigungen
+  const ap=allDrinks().filter(d=>d.state!=='ok'&&d.pid!==me&&S.people[d.pid]).reverse();
+  const todo=me?ap.filter(d=>!S.votes['ok_'+d.id+'__'+me]):[];
+  $('#approveSec').innerHTML=ap.length?`<div class="card" style="border-color:var(--cy)"><header class="row" style="justify-content:space-between;margin-bottom:8px"><h3>Getränke bestätigen</h3><span class="pill dabei">${todo.length} offen für dich</span></header>
+   <p class="small mute" style="margin:0 0 10px">Hast du es gesehen? Ein Ja reicht, damit es zählt. Mehr Nein als Ja = abgelehnt.</p>
+   <ul class="feed" style="max-height:340px">${ap.slice(0,30).map(d=>{const p=person(d.pid),mine=S.votes['ok_'+d.id+'__'+me];
+    return`<li style="grid-template-columns:auto 1fr;gap:10px"><span class="ic" style="color:${d.state==='no'?'#ff3b5c':'var(--cy)'}">${drinkIcon(d.k)}</span>
+     <div><b>${esc(p.name)}</b>: ${esc(DK[d.k]?DK[d.k].l:d.k)} <span class="mute small">· ${fmtT(d.ts)}${d.ok.length?' · ✓ '+d.ok.map(v=>esc(nameOf(v.pid))).join(', '):''}${d.no.length?' · ✗ '+d.no.map(v=>esc(nameOf(v.pid))).join(', '):''}</span>
+      ${me?`<div class="row" style="margin-top:6px;gap:6px"><button class="chip tiny ${mine&&mine.choice==='ok'?'on':''}" data-act="approve" data-id="${esc(d.id)}" data-v="ok">✓ Bestätigen</button><button class="chip tiny ${mine&&mine.choice==='no'?'on':''}" data-act="approve" data-id="${esc(d.id)}" data-v="no">✗ Stimmt nicht</button></div>`:''}</div></li>`}).join('')}</ul></div>`:'';
   // Timeline
   const ps=people(),lr=leadingResto();
   const stops=[{t:'16:00',h:'Start: Ende der Vorlesung',d:'Gemeinsamer Aufbruch',c:'#c9c5e6',who:ps.filter(p=>p.status==='dabei'&&!p.out)},
@@ -785,12 +888,12 @@ function rRanking(by){
  const tiers=Object.keys(groups).map(Number).sort((a,b)=>b-a);
  const crown=`<svg class="crown" viewBox="0 0 48 30"><path d="M4 26L2 6l12 9 10-13 10 13 12-9-2 20z" fill="#ffc21a" stroke="#fff6c9" stroke-width="1.5"/><circle cx="24" cy="18" r="3" fill="#ff3b5c"/></svg>`;
  $('#pyr').innerHTML=tiers.length?tiers.map((n,i)=>`<div class="tier"><span class="rk">#${i+1}</span>${groups[n].sort((a,b)=>a.name.localeCompare(b.name,'de')).map(p=>{const L=levelOf(n);
-   return`<div class="fighter ${i===0&&n>0?'top1':''} ${p.out?'out':''}">${i===0&&n>0?crown:''}<button data-act="person" data-id="${esc(p.id)}" aria-label="Profil ${esc(p.name)}">${avatar(p,L,i===0&&n>0?130:92)}<div class="nm">${esc(p.name)}</div><div class="ct">${n}</div><div class="tt">Lv ${L} · ${esc(LEVELS[L-1].name)}</div>${statusPill(p)}</button></div>`}).join('')}</div>`).join('')
+   return`<div class="fighter ${i===0&&n>0?'top1':''} ${p.out?'out':''}">${i===0&&n>0?crown:''}<button data-act="person" data-id="${esc(p.id)}" aria-label="Profil ${esc(p.name)}">${avatar(p,L,i===0&&n>0?130:92)}<div class="nm">${esc(p.name)}</div><div class="ct">${n}</div><div class="tt">Lv ${D(L)} · ${esc(LEVELS[L-1].name)}</div>${statusPill(p)}</button></div>`}).join('')}</div>`).join('')
   :`<div class="empty">Noch keine Kämpfer im Turnier. <button class="linkbtn" data-act="login">Jetzt anmelden</button></div>`;
  const all=people().sort((a,b)=>countOf(by,b.id)-countOf(by,a.id)||a.name.localeCompare(b.name,'de'));
  const col=(st,l)=>{const list=all.filter(p=>p.status===st);return`<div class="card"><h3>${l} <span class="mute">(${list.length})</span></h3><div class="who">${list.map(p=>`<button class="chip" data-act="person" data-id="${esc(p.id)}" ${p.out?'style="opacity:.45;filter:grayscale(1)"':''}>${face(p,levelOf(countOf(by,p.id)))}${esc(p.name)}</button>`).join('')||'<span class="mute small">niemand</span>'}</div></div>`};
  $('#roster').innerHTML=col('dabei','Dabei')+col('vielleicht','Vielleicht')+col('nein','Nicht dabei');
- $('#levelGuide').innerHTML=LEVELS.map(l=>`<div class="card row" style="flex-wrap:nowrap">${avatar({id:'guide',name:'S'},l.n,64)}<div><b style="color:${l.c}">Level ${l.n} · ${esc(l.name)}</b><div class="small mute">ab ${l.min} Getränk${l.min===1?'':'en'} · ${esc(l.sub)}</div></div></div>`).join('');
+ $('#levelGuide').innerHTML=LEVELS.map(l=>`<div class="card row" style="flex-wrap:nowrap;cursor:${l.n>1?'pointer':'default'}" ${l.n>1?`data-act="preview" data-l="${l.n}" role="button" tabindex="0" aria-label="Animation ansehen"`:''}><span style="flex:none">${avatar({id:'guide',name:'S'},l.n,64)}</span><div><b style="color:${l.c}">Level ${l.d} · ${esc(l.name)}</b><div class="small mute">ab ${l.min} Getränk${l.min===1?'':'en'} · ${esc(l.sub)}</div></div></div>`).join('');
 }
 
 /* ---- Plan ---- */
@@ -850,7 +953,7 @@ async function ensureMap(){
  try{if(!window.L)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js')}catch(e){$('#map').innerHTML='<div class="mapmsg">Die Karte konnte nicht geladen werden. Die Stationen findest du unten – mit Google-Maps-Links.</div>';return}
  $('#map').innerHTML='';
  map=L.map('map',{zoomControl:true,attributionControl:true}).setView([48.79,9.20],13);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,className:'darktiles',attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'}).addTo(map);
+ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,className:'darktiles',attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende'}).addTo(map);
  layer=L.layerGroup().addTo(map);
  map.on('click',e=>{if(!picking)return;const id=picking;picking=null;document.body.classList.remove('picking');
   const v=venue(id);const cur=S.venues[id]||{};store.put('venues',id,{...cur,kind:v?v.kind:'resto',lat:+e.latlng.lat.toFixed(6),lng:+e.latlng.lng.toFixed(6),setBy:me||null,ts:now()});
@@ -886,12 +989,12 @@ function rStats(by){
  const ps=people(),ds=Object.values(S.drinks).filter(d=>d&&d.pid&&S.people[d.pid]);
  const af=ds.filter(d=>DK[d.k]&&DK[d.k].af).length;
  const maxL=ps.reduce((m,p)=>Math.max(m,levelOf(countOf(by,p.id))),1);
- const k=[[ps.filter(p=>p.status==='dabei').length,'sind dabei'],[ds.length,'Getränke erfasst'],[ds.length?Math.round(af/ds.length*100)+'%':'–','alkoholfrei'],[maxL,'höchstes Level'],[ps.filter(p=>p.status!=='nein'&&!p.out).length,'noch aktiv'],[ps.filter(p=>p.out).length,'ausgeschieden']];
+ const k=[[ps.filter(p=>p.status==='dabei').length,'sind dabei'],[ds.length,'Getränke erfasst'],[ds.length?Math.round(af/ds.length*100)+'%':'–','alkoholfrei'],[D(maxL),'höchstes Level'],[ps.filter(p=>p.status!=='nein'&&!p.out).length,'noch aktiv'],[ps.filter(p=>p.out).length,'ausgeschieden']];
  $('#kpis').innerHTML=k.map(([v,l])=>`<div class="kpi"><b>${esc(v)}</b><span>${l}</span></div>`).join('');
  const t={};ds.forEach(d=>t[d.k]=(t[d.k]||0)+1);const mt=Math.max(1,...Object.values(t));
  $('#byType').innerHTML=DRINKS.map(d=>`<div class="b" style="--c:${d.af?'#38e1ff':'#ffc21a'}"><span>${esc(d.l)}</span><i style="width:${(t[d.k]||0)/mt*100}%"></i><em>${t[d.k]||0}</em></div>`).join('');
  const lc={};ps.forEach(p=>{const L=levelOf(countOf(by,p.id));lc[L]=(lc[L]||0)+1});const ml=Math.max(1,...Object.values(lc));
- $('#byLevel').innerHTML=LEVELS.map(l=>`<div class="b" style="--c:${l.c}"><span>${l.n} · ${esc(l.name)}</span><i style="width:${(lc[l.n]||0)/ml*100}%"></i><em>${lc[l.n]||0}</em></div>`).join('');
+ $('#byLevel').innerHTML=LEVELS.map(l=>`<div class="b" style="--c:${l.c}"><span>${l.d} · ${esc(l.name)}</span><i style="width:${(lc[l.n]||0)/ml*100}%"></i><em>${lc[l.n]||0}</em></div>`).join('');
  const hrs=[16,17,18,19,20,21,22,23,0,1,2,3];const hc={};ds.forEach(d=>{const h=hourOf(d.ts);hc[h]=(hc[h]||0)+1});const mh=Math.max(1,...Object.values(hc));
  $('#byHour').innerHTML=hrs.map(h=>`<div><span>${hc[h]||''}</span><i style="height:${(hc[h]||0)/mh*100}%"></i>${String(h).padStart(2,'0')}</div>`).join('');
  const best=(f,flt=()=>true)=>{let b=null,bv=0;ps.filter(flt).forEach(p=>{const v=f(p);if(v>bv){bv=v;b=p}});return b?{p:b,v:bv}:null};
@@ -907,15 +1010,20 @@ function rStats(by){
 /* ================= Aktionen ================= */
 async function addDrink(k){
  if(!requireMe())return;const p=person(me);if(p.out)return toast('Du bist ausgeschieden – erst „Ich bin wieder da“ tippen.');
- const before=countOf(drinkStats(),me);const id=now().toString(36)+'-'+uid().slice(0,8);
+ const id=now().toString(36)+'-'+uid().slice(0,8);
  await act('drinks',id,{pid:me,k,ts:now()});
- const n=before+1,L0=levelOf(before),L1=levelOf(n);
- log('drink',`${p.name}: ${DK[k].l} (#${n})`);
- if(L1>L0)log('level',`${p.name} erreicht Level ${L1}: ${LEVELS[L1-1].name}!`);
- if(navigator.vibrate)try{navigator.vibrate(L1>L0?[60,40,120]:25)}catch(e){}
- if(!DK[k].af&&n%3===0)toast('<span>Sifa-Pflichthinweis: zwischendurch ein <b>Wasser</b> – zählt genauso fürs Level.</span>','cy');
+ const n=allDrinks().filter(d=>d.pid===me&&d.state!=='no').length;
+ log('drink',`${p.name} trägt ein: ${DK[k].l} – wartet auf Bestätigung`);
+ toast('<span>Eingetragen! Zählt, sobald jemand aus der Gruppe <b>bestätigt</b>.</span>','cy');
+ if(navigator.vibrate)try{navigator.vibrate(25)}catch(e){}
+ if(!DK[k].af&&n%3===0)setTimeout(()=>toast('<span>Sifa-Pflichthinweis: zwischendurch ein <b>Wasser</b> – zählt genauso fürs Level.</span>','cy'),1500);
 }
-async function undo(){const l=drinkStats()[me]||[];if(!l.length)return;const d=l[l.length-1];await store.del('drinks',d.id);toast('Letzter Eintrag entfernt.')}
+async function undo(){const l=allDrinks().filter(d=>d.pid===me);if(!l.length)return;const d=l[l.length-1];await store.del('drinks',d.id);toast('Letzter Eintrag entfernt.')}
+async function approve(did,choice){if(!requireMe())return;const d=S.drinks[did];if(!d)return;if(d.pid===me)return toast('Eigene Getränke kann nur jemand anderes bestätigen.');
+ const id='ok_'+did+'__'+me;const cur=S.votes[id];
+ if(cur&&cur.choice===choice){await store.del('votes',id);return}
+ await act('votes',id,{poll:'ok_'+did,pid:me,choice,ts:now()});
+ log('vote',`${nameOf(me)} ${choice==='ok'?'bestätigt':'zweifelt an'}: ${DK[d.k]?DK[d.k].l:d.k} von ${nameOf(d.pid)}`)}
 async function setStatus(v){if(!requireMe())return;const p=S.people[me];if(p.status===v)return;await act('people',me,{...p,status:v,updated:now()});log('status',`${p.name} ist jetzt: ${{dabei:'Dabei',vielleicht:'Vielleicht',nein:'Nicht dabei'}[v]}`)}
 async function toggleSeg(s){if(!requireMe())return;const p=S.people[me];const segs={...(p.segs||{})};segs[s]=!segs[s];await act('people',me,{...p,segs,updated:now()});
  const st=STAGES.find(x=>x.id===s);log('status',`${p.name} ${segs[s]?'ist dabei bei':'verzichtet auf'}: ${st.short}`)}
@@ -937,7 +1045,7 @@ async function seedDemo(){
  const names=['Anna','Ben','Chiara','Deniz','Elias','Fatma','Gregor'];const ks=DRINKS.map(d=>d.k);
  for(const [i,n] of names.entries()){const id='p-demo'+i;if(S.people[id])continue;
   await store.put('people',id,{name:n,status:i===5?'vielleicht':'dabei',segs:{dinner:true,brau:i<6,wolf:i<3},out:i===4,ts:now()-i*6e5});
-  const c=[9,6,6,3,2,1,0][i];for(let j=0;j<c;j++)await store.put('drinks',id+'-d'+j,{pid:id,k:ks[(i+j*3)%ks.length],ts:EVENT_START+(j*35+i*7)*6e4});
+  const c=[9,6,6,3,2,1,0][i];for(let j=0;j<c;j++){await store.put('drinks',id+'-d'+j,{pid:id,k:ks[(i+j*3)%ks.length],ts:EVENT_START+(j*35+i*7)*6e4});if(j<c-1)await store.put('votes','ok_'+id+'-d'+j+'__p-demo'+((i+1)%7),{poll:'ok_'+id+'-d'+j,pid:'p-demo'+((i+1)%7),choice:'ok',ts:now()})}
   await store.put('votes','resto__'+id,{poll:'resto',pid:id,choice:['meze','plateia','meze','littlegreek','meze','plateia','thios'][i],ts:now()});
  }
  await store.put('comments','c-demo1',{target:'stage_dinner',pid:'p-demo0',name:'Anna',text:'Ich reserviere, sobald die Abstimmung steht!',ts:now()-3e5});
@@ -949,7 +1057,8 @@ async function seedDemo(){
 
 document.addEventListener('click',async e=>{
  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
- if(a==='closeLvl'){$('#lvlup').classList.remove('on');return}
+ if(a==='closeLvl'){closeLvl();return}
+ if(a==='preview'){const pp=(me&&person(me))||{id:'guide',name:'S'};queueLevelUp(pp,+b.dataset.l,true);return}
  if(a==='closeModal')return closeModal();
  if(a==='login')return openLogin();
  if(a==='me')return me&&S.people[me]?openProfile(me):openLogin();
@@ -961,6 +1070,8 @@ document.addEventListener('click',async e=>{
  if(!store)return;
  if(a==='drink')return addDrink(b.dataset.k);
  if(a==='undo')return undo();
+ if(a==='approve')return approve(b.dataset.id,b.dataset.v);
+ if(a==='delDrink'){const d=S.drinks[b.dataset.id];if(d&&d.pid===me){await store.del('drinks',b.dataset.id);toast('Eintrag entfernt.')}return}
  if(a==='status')return setStatus(b.dataset.v);
  if(a==='seg')return toggleSeg(b.dataset.s);
  if(a==='leave'){if(!requireMe())return;const p=S.people[me];await act('people',me,{...p,out:true,outTs:now()});log('leave',`${p.name} hat den Abend verlassen. Gute Heimfahrt!`);return toast('Gute Heimfahrt! Du bleibst im Ranking sichtbar.')}
@@ -976,7 +1087,7 @@ document.addEventListener('click',async e=>{
  if(a==='reset'){if(store.reset){await store.reset();me=null;LS.del('sifa_me_'+ROOM);prevLevels=null;toast('Zurückgesetzt.')}return}
 });
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
-addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();$('#lvlup').classList.remove('on')}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeLvl()}});
 
 document.addEventListener('submit',async e=>{
  const f=e.target.closest('form[data-form]');if(!f)return;e.preventDefault();const fd=new FormData(f),k=f.dataset.form;
@@ -1016,7 +1127,7 @@ function randomEvent(){
  if(document.hidden||!ready)return;const by=drinkStats();const ps=people().filter(p=>active(p)&&!p.out);
  const r=Math.random();let msg=QUIPS[Math.floor(Math.random()*QUIPS.length)];
  if(r<.3&&ps.length>1){const p=ps[Math.floor(Math.random()*ps.length)];const n=countOf(by,p.id);const L=levelOf(n),nx=LEVELS[L];
-  msg=nx?`Scouter meldet: ${esc(p.name)} ist ${nx.min-n} Getränk${nx.min-n===1?'':'e'} von „${esc(nx.name)}“ entfernt.`:`${esc(p.name)} hat das Ultra-Instinkt-Level erreicht. Die Gefährdungsbeurteilung erstellt sich jetzt selbst.`}
+  msg=nx?`Scouter meldet: ${esc(p.name)} ist ${nx.min-n} Getränk${nx.min-n===1?'':'e'} von „${esc(nx.name)}“ entfernt.`:`${esc(p.name)} ist „Der ultimative Lutz“. Die Gefährdungsbeurteilung erstellt sich jetzt selbst.`}
  toast(`<span>${msg}</span>`,'cy',6000)}
 (function loop(){setTimeout(()=>{randomEvent();loop()},(240+Math.random()*240)*1000)})();
 
