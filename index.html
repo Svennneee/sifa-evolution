@@ -395,7 +395,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
 <!-- ===== RANKING ===== -->
 <section class="view" id="v-ranking">
   <header class="sec" style="margin-top:0"><h2 class="disp">Power-Ranking</h2>
-    <p class="mute" style="margin:4px 0 0">Wer die meisten Getränke einträgt, steht an der Spitze. Wasser und Alkoholfreies zählen voll. Gleichstand = gleiche Stufe.</p></header>
+    <p class="mute" style="margin:4px 0 0">Wer die meisten bestätigten Getränke hat, steht an der Spitze. Gleichstand = gleiche Stufe.</p></header>
   <div class="pyr" id="pyr"></div>
   <div class="sec">
     <header><h2 class="disp">Die ganze Truppe</h2></header>
@@ -540,8 +540,7 @@ const FX={2:{fx:'peek',shout:'Na, wer guckt denn da?',pt:{shape:'rect'}},3:{fx:'
 const levelOf=n=>{let L=1;for(const l of LEVELS)if(n>=l.min)L=l.n;return L};
 
 const DRINKS=[
- {k:'bier',l:'Bier',af:0},{k:'wein',l:'Wein',af:0},{k:'ouzo',l:'Ouzo / Shot',af:0},{k:'cocktail',l:'Cocktail',af:0},
- {k:'afbier',l:'Alkoholfrei',af:1},{k:'soft',l:'Softdrink',af:1},{k:'wasser',l:'Wasser',af:1}
+ {k:'bier',l:'Bier',af:0},{k:'wein',l:'Wein',af:0},{k:'ouzo',l:'Ouzo / Shot',af:0},{k:'cocktail',l:'Cocktail',af:0}
 ];
 const DK=Object.fromEntries(DRINKS.map(d=>[d.k,d]));
 const drinkIcon=k=>{const s='fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"';
@@ -669,7 +668,7 @@ const nameOf=id=>(S.people[id]&&S.people[id].name)||'Unbekannt';
 function approvals(){const m={};for(const v of Object.values(S.votes)){if(!v||typeof v.poll!=='string'||v.poll.slice(0,3)!=='ok_')continue;const did=v.poll.slice(3);(m[did]=m[did]||[]).push(v)}return m}
 function drinkState(d,id,ap){const vs=(ap[id]||[]).filter(v=>v.pid!==d.pid);const ok=vs.filter(v=>v.choice==='ok'),no=vs.filter(v=>v.choice==='no');
  return {ok,no,state:ok.length>=1&&ok.length>no.length?'ok':no.length>ok.length?'no':'pending'}}
-function allDrinks(){const ap=approvals();return Object.entries(S.drinks).filter(([,d])=>d&&d.pid).map(([id,d])=>({...d,id,...drinkState(d,id,ap)})).sort((a,b)=>a.ts-b.ts)}
+function allDrinks(){const ap=approvals();return Object.entries(S.drinks).filter(([,d])=>d&&d.pid&&DK[d.k]).map(([id,d])=>({...d,id,...drinkState(d,id,ap)})).sort((a,b)=>a.ts-b.ts)}
 function drinkStats(){
  const by={};for(const d of allDrinks()){if(d.state!=='ok')continue;(by[d.pid]=by[d.pid]||[]).push(d)}
  return by;
@@ -792,7 +791,7 @@ function openProfile(id){
   <div class="row" style="margin-top:12px"><button class="btn sm ghost" data-act="logout">Profil wechseln</button></div>`:''}`)}
 
 const statusPill=p=>p.out?'<span class="pill raus">Ausgeschieden</span>':`<span class="pill ${esc(p.status)}">${{dabei:'Dabei',vielleicht:'Vielleicht',nein:'Nicht dabei'}[p.status]||'Dabei'}</span>`;
-const power=(n,list=[])=>n*1250+LEVELS[levelOf(n)-1].n*500+list.filter(d=>DK[d.k]&&DK[d.k].af).length*250;
+const power=(n)=>n*1250+LEVELS[levelOf(n)-1].n*500;
 
 /* ================= Render ================= */
 let tab='basis', prevLevels=null, prevLeader=undefined, openThreads=new Set(), replyTo=null, picking=null;
@@ -842,7 +841,7 @@ function rBasis(by){
      </div></div>
     ${p.out?`<div class="hint warn" style="margin-top:14px"><span>Du bist als ausgeschieden markiert. Gute Heimfahrt – oder doch noch nicht?</span></div><div class="row" style="margin-top:10px"><button class="btn cy" data-act="rejoin">Ich bin wieder da</button></div>`:`
     <div class="drinks">${DRINKS.map(d=>`<button class="dbtn ${d.af?'af':''}" data-act="drink" data-k="${d.k}">${drinkIcon(d.k)}${esc(d.l)}${tally[d.k]?`<span class="n">${tally[d.k]}</span>`:''}</button>`).join('')}</div>
-    <div class="row" style="margin-top:10px;justify-content:space-between"><span class="note" style="margin:0">Freiwillig, ohne Trinkzwang – alkoholfreie Getränke zählen genauso. Jeder Eintrag zählt erst, wenn ihn jemand anderes bestätigt.</span>${allDrinks().some(d=>d.pid===me)?'<button class="btn sm ghost" data-act="undo">Letztes rückgängig</button>':''}</div>
+    <div class="row" style="margin-top:10px;justify-content:space-between"><span class="note" style="margin:0">Freiwillig, ohne Trinkzwang. Jeder Eintrag zählt erst, wenn ihn jemand anderes bestätigt.</span>${allDrinks().some(d=>d.pid===me)?'<button class="btn sm ghost" data-act="undo">Letztes rückgängig</button>':''}</div>
     ${myOpen.length?`<label class="lab">Warten auf Bestätigung / abgelehnt</label><div class="chips">${myOpen.map(d=>`<span class="chip tiny" style="${d.state==='no'?'border-color:#ff3b5c;color:#ff8aa0':''}">${esc(DK[d.k]?DK[d.k].l:d.k)} ${fmtT(d.ts)} · ${d.state==='no'?'abgelehnt':'offen'}${d.state==='no'?` <button class="linkbtn" style="min-height:0;padding:0;color:#ff8aa0" data-act="delDrink" data-id="${esc(d.id)}">entfernen</button>`:''}</span>`).join('')}</div>`:''}`}
     <label class="lab">Mein Status</label>
     <div class="seg" role="group" aria-label="Status">${[['dabei','Dabei',''],['vielleicht','Vielleicht','may'],['nein','Nicht dabei','no']].map(([v,l,c])=>`<button class="${c} ${p.status===v?'on':''}" data-act="status" data-v="${v}">${l}</button>`).join('')}</div>
@@ -986,10 +985,9 @@ function rKarte(){
 
 /* ---- Stats ---- */
 function rStats(by){
- const ps=people(),ds=Object.values(S.drinks).filter(d=>d&&d.pid&&S.people[d.pid]);
- const af=ds.filter(d=>DK[d.k]&&DK[d.k].af).length;
+ const ps=people(),ds=allDrinks().filter(d=>d.state==='ok'&&S.people[d.pid]);
  const maxL=ps.reduce((m,p)=>Math.max(m,levelOf(countOf(by,p.id))),1);
- const k=[[ps.filter(p=>p.status==='dabei').length,'sind dabei'],[ds.length,'Getränke erfasst'],[ds.length?Math.round(af/ds.length*100)+'%':'–','alkoholfrei'],[D(maxL),'höchstes Level'],[ps.filter(p=>p.status!=='nein'&&!p.out).length,'noch aktiv'],[ps.filter(p=>p.out).length,'ausgeschieden']];
+ const k=[[ps.filter(p=>p.status==='dabei').length,'sind dabei'],[ds.length,'bestätigte Getränke'],[ps.length?(ds.length/Math.max(1,ps.filter(p=>p.status!=='nein').length)).toLocaleString('de-DE',{maximumFractionDigits:1}):'–','Ø pro Person'],[D(maxL),'höchstes Level'],[ps.filter(p=>p.status!=='nein'&&!p.out).length,'noch aktiv'],[ps.filter(p=>p.out).length,'ausgeschieden']];
  $('#kpis').innerHTML=k.map(([v,l])=>`<div class="kpi"><b>${esc(v)}</b><span>${l}</span></div>`).join('');
  const t={};ds.forEach(d=>t[d.k]=(t[d.k]||0)+1);const mt=Math.max(1,...Object.values(t));
  $('#byType').innerHTML=DRINKS.map(d=>`<div class="b" style="--c:${d.af?'#38e1ff':'#ffc21a'}"><span>${esc(d.l)}</span><i style="width:${(t[d.k]||0)/mt*100}%"></i><em>${t[d.k]||0}</em></div>`).join('');
@@ -998,9 +996,8 @@ function rStats(by){
  const hrs=[16,17,18,19,20,21,22,23,0,1,2,3];const hc={};ds.forEach(d=>{const h=hourOf(d.ts);hc[h]=(hc[h]||0)+1});const mh=Math.max(1,...Object.values(hc));
  $('#byHour').innerHTML=hrs.map(h=>`<div><span>${hc[h]||''}</span><i style="height:${(hc[h]||0)/mh*100}%"></i>${String(h).padStart(2,'0')}</div>`).join('');
  const best=(f,flt=()=>true)=>{let b=null,bv=0;ps.filter(flt).forEach(p=>{const v=f(p);if(v>bv){bv=v;b=p}});return b?{p:b,v:bv}:null};
- const afOf=p=>(by[p.id]||[]).filter(d=>DK[d.k]&&DK[d.k].af).length;
  const first=ds.slice().sort((a,b)=>a.ts-b.ts)[0];
- const aw=[['Spitzenreiter',best(p=>countOf(by,p.id)),v=>v+' Getränke'],['Hydrations-Held',best(afOf),v=>v+'× alkoholfrei'],
+ const aw=[['Spitzenreiter',best(p=>countOf(by,p.id)),v=>v+' Getränke'],['Cocktail-Connaisseur',best(p=>(by[p.id]||[]).filter(d=>d.k==='cocktail').length),v=>v+'× Cocktail'],
   ['Ouzo-Orakel',best(p=>(by[p.id]||[]).filter(d=>d.k==='ouzo').length),v=>v+'× Ouzo / Shot'],
   ['Frühstarter',first&&S.people[first.pid]?{p:person(first.pid),v:first.ts}:null,v=>'erstes Getränk '+fmtT(v)],
   ['Durchhalte-Legende',best(p=>{const l=by[p.id]||[];return l.length?l[l.length-1].ts:0},p=>!p.out),v=>'zuletzt aktiv '+fmtT(v)]];
@@ -1016,7 +1013,7 @@ async function addDrink(k){
  log('drink',`${p.name} trägt ein: ${DK[k].l} – wartet auf Bestätigung`);
  toast('<span>Eingetragen! Zählt, sobald jemand aus der Gruppe <b>bestätigt</b>.</span>','cy');
  if(navigator.vibrate)try{navigator.vibrate(25)}catch(e){}
- if(!DK[k].af&&n%3===0)setTimeout(()=>toast('<span>Sifa-Pflichthinweis: zwischendurch ein <b>Wasser</b> – zählt genauso fürs Level.</span>','cy'),1500);
+ if(n%3===0)setTimeout(()=>toast('<span>Sifa-Pflichthinweis: zwischendurch ein <b>Wasser</b> – zählt nicht, hilft aber morgen.</span>','cy'),1500);
 }
 async function undo(){const l=allDrinks().filter(d=>d.pid===me);if(!l.length)return;const d=l[l.length-1];await store.del('drinks',d.id);toast('Letzter Eintrag entfernt.')}
 async function approve(did,choice){if(!requireMe())return;const d=S.drinks[did];if(!d)return;if(d.pid===me)return toast('Eigene Getränke kann nur jemand anderes bestätigen.');
