@@ -47,6 +47,12 @@ a{color:var(--cy)}
 .dot.live{background:var(--cy);box-shadow:0 0 10px var(--cy);animation:pulse 1.6s infinite}
 .dot.demo{background:var(--ki)}
 @keyframes pulse{50%{opacity:.4}}
+.musicBtn{flex:none;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--mute);display:grid;place-items:center;padding:0}
+.musicBtn svg{width:22px;height:22px}.musicBtn .w{display:none}
+.musicBtn.on{color:var(--ki);border-color:var(--ki);box-shadow:0 0 14px #ffc21a55}.musicBtn.on .w{display:inline}.musicBtn.on .m{display:none}
+.musicBtn.on svg{animation:pulse 1.2s infinite}
+@media(max-width:420px){.mode{padding:6px 8px}.logo svg{width:32px;height:32px}.logo b{font-size:20px}.meBtn .btn{padding:6px 10px;font-size:13px}.top .wrap{gap:8px}}
+.logo{min-width:0;overflow:hidden}.logo>div{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .meBtn{display:flex;align-items:center;gap:8px;background:none;border:0;padding:0}
 .meBtn svg{display:block}
 
@@ -362,6 +368,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
       <div><b class="disp">Sifa <span>Evolution</span></b><small>Stuttgart Edition · Mi 25.11.</small></div>
     </a>
     <span class="mode" id="mode"><i class="dot" id="modeDot"></i><span id="modeTxt">Verbinde …</span></span>
+    <button class="musicBtn" id="musicBtn" data-act="music" aria-label="Musik an/aus" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="m" d="M17 9l5 6M22 9l-5 6"/></svg></button>
     <button class="meBtn" id="meBtn" data-act="me" aria-label="Mein Profil"></button>
   </div>
 </header>
@@ -762,9 +769,9 @@ function nextLevelUp(){const it=lvlQ.shift();if(!it){lvlBusy=false;return}lvlBus
 function closeLvl(){const o=$('#lvlup');if(!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showLevelUp.t);setTimeout(nextLevelUp,250)}
 function showLevelUp(p,L,own=true){const lv=LEVELS[L-1],f=FX[L]||FX[2];const o=$('#lvlup');o.style.setProperty('--lc',lv.c);
  o.className='';
- $('#lvlIn').innerHTML=`${own?'':`<div class="who">${esc(p.name)} transformiert!</div>`}<div class="big">${esc(f.shout)}</div><span class="lvav">${L===16?`<img class="lutz" src="lutz.png" alt="Der ultimative Lutz" onerror="this.replaceWith(document.createRange().createContextualFragment(this.dataset.fb))" data-fb="${esc(avatar(p,L,200))}">`:avatar(p,L,own?200:170)}</span><div class="t">Level ${D(L)} · ${esc(lv.name)}</div><p>${esc(lv.sub)}</p><p class="small mute">Tippen zum Schließen</p>`;
+ $('#lvlIn').innerHTML=`${own?'':`<div class="who">${esc(p.name)} transformiert!</div>`}<div class="big">${esc(f.shout)}</div><span class="lvav">${L===16?`<img class="lutz" src="lutz.jpg" alt="Der ultimative Lutz" onerror="this.replaceWith(document.createRange().createContextualFragment(this.dataset.fb))" data-fb="${esc(avatar(p,L,200))}">`:avatar(p,L,own?200:170)}</span><div class="t">Level ${D(L)} · ${esc(lv.name)}</div><p>${esc(lv.sub)}</p><p class="small mute">Tippen zum Schließen</p>`;
  void o.offsetWidth;o.classList.add('on','fx-'+f.fx);
- const pt=f.pt||{};confetti(pt.colors||[lv.c,'#fff',lv.c,lv.helm],pt);if(L===16)setTimeout(()=>confetti(pt.colors,{shape:'rect',n:200}),900);
+ const pt=f.pt||{};confetti(pt.colors||[lv.c,'#fff',lv.c,lv.helm],pt);if(L===16){setTimeout(()=>confetti(pt.colors,{shape:'rect',n:200}),900);lutzMusic()}
  if(navigator.vibrate)try{navigator.vibrate(L===16?[100,50,100,50,300]:[60,40,120])}catch(e){}
  clearTimeout(showLevelUp.t);showLevelUp.t=setTimeout(closeLvl,L===16?9000:own?5200:3800)}
 
@@ -1056,6 +1063,7 @@ async function seedDemo(){
 document.addEventListener('click',async e=>{
  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
  if(a==='closeLvl'){closeLvl();return}
+ if(a==='music')return toggleMusic();
  if(a==='preview'){const pp=(me&&person(me))||{id:'guide',name:'S'};queueLevelUp(pp,+b.dataset.l,true);return}
  if(a==='closeModal')return closeModal();
  if(a==='login')return openLogin();
@@ -1129,8 +1137,21 @@ function randomEvent(){
  toast(`<span>${msg}</span>`,'cy',6000)}
 (function loop(){setTimeout(()=>{randomEvent();loop()},(240+Math.random()*240)*1000)})();
 
+/* ================= Musik ================= */
+// Lutz' Song: Datei 2017fin.mp3 muss neben index.html im Repository liegen
+const MUSIC_SRC='2017fin.mp3';
+let music=null;
+function getMusic(){if(!music){music=new Audio(MUSIC_SRC);music.loop=true;music.preload='none';music.volume=.6;
+ music.addEventListener('play',()=>setMusicBtn(true));music.addEventListener('pause',()=>setMusicBtn(false));music.addEventListener('error',()=>setMusicBtn(false))}return music}
+function setMusicBtn(on){const b=$('#musicBtn');b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))}
+async function toggleMusic(){const m=getMusic();
+ if(!m.paused){m.pause();return}
+ try{await m.play();toast('<span>Jetzt läuft: <b>Lutz – 2017fin</b></span>','gold',3000)}
+ catch(e){setMusicBtn(false);toast(e&&e.name==='NotAllowedError'?'Bitte nochmal auf den Lautsprecher tippen.':'Musik nicht gefunden – liegt <b>2017fin.mp3</b> im Repository neben index.html?')}}
+function lutzMusic(){const m=getMusic();if(!m.paused)return;m.currentTime=0;m.play().catch(()=>{})}
+
 /* ================= Start ================= */
-try{const im=new Image();im.src='lutz.png'}catch(e){}
+try{const im=new Image();im.src='lutz.jpg'}catch(e){}
 route();
 pickStore().then(s=>{store=s;setMode(s.mode==='demo'?'demo':'live');
  if(me&&!S.people[me]&&ready&&s.mode!=='claude'){/* Profil existiert nicht mehr */}
