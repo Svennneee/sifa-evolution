@@ -287,6 +287,7 @@ nav.tabs a.on svg{filter:drop-shadow(0 0 6px var(--ki))}
 #lvlup .big{font-family:Bangers;font-size:clamp(42px,11vw,86px);line-height:.95;color:#fff;text-shadow:0 0 24px #000,0 0 30px var(--lc),0 5px 0 #000;max-width:92vw;margin:0 auto;text-wrap:balance}
 #lvlup .t{font-family:Bangers;font-size:clamp(30px,7vw,48px);color:var(--lc);text-shadow:0 3px 0 #000}
 #lvlup p{margin:6px 0 0;font-size:17px}
+#lvlup .lutz{display:block;width:min(88vw,520px);max-height:52vh;object-fit:cover;border-radius:18px;border:2px solid #ffe066;box-shadow:0 0 40px #ffc21a,0 0 90px #ff8a0088;margin:10px auto}
 #lvlup .who{font-weight:700;font-size:18px;margin-bottom:4px;color:#fff}
 #lvlup .lvav{display:inline-block;transform-origin:50% 90%}
 #lvlup .fxl{position:absolute;inset:0;pointer-events:none}
@@ -761,11 +762,11 @@ function nextLevelUp(){const it=lvlQ.shift();if(!it){lvlBusy=false;return}lvlBus
 function closeLvl(){const o=$('#lvlup');if(!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showLevelUp.t);setTimeout(nextLevelUp,250)}
 function showLevelUp(p,L,own=true){const lv=LEVELS[L-1],f=FX[L]||FX[2];const o=$('#lvlup');o.style.setProperty('--lc',lv.c);
  o.className='';
- $('#lvlIn').innerHTML=`${own?'':`<div class="who">${esc(p.name)} transformiert!</div>`}<div class="big">${esc(f.shout)}</div><span class="lvav">${avatar(p,L,own?200:170)}</span><div class="t">Level ${D(L)} · ${esc(lv.name)}</div><p>${esc(lv.sub)}</p><p class="small mute">Tippen zum Schließen</p>`;
+ $('#lvlIn').innerHTML=`${own?'':`<div class="who">${esc(p.name)} transformiert!</div>`}<div class="big">${esc(f.shout)}</div><span class="lvav">${L===16?`<img class="lutz" src="lutz.jpg" alt="Der ultimative Lutz" onerror="this.replaceWith(document.createRange().createContextualFragment(this.dataset.fb))" data-fb="${esc(avatar(p,L,200))}">`:avatar(p,L,own?200:170)}</span><div class="t">Level ${D(L)} · ${esc(lv.name)}</div><p>${esc(lv.sub)}</p><p class="small mute">Tippen zum Schließen</p>`;
  void o.offsetWidth;o.classList.add('on','fx-'+f.fx);
  const pt=f.pt||{};confetti(pt.colors||[lv.c,'#fff',lv.c,lv.helm],pt);if(L===16)setTimeout(()=>confetti(pt.colors,{shape:'rect',n:200}),900);
  if(navigator.vibrate)try{navigator.vibrate(L===16?[100,50,100,50,300]:[60,40,120])}catch(e){}
- clearTimeout(showLevelUp.t);showLevelUp.t=setTimeout(closeLvl,own?(L===16?7000:5200):3800)}
+ clearTimeout(showLevelUp.t);showLevelUp.t=setTimeout(closeLvl,L===16?9000:own?5200:3800)}
 
 /* ================= Login / Profil ================= */
 function openLogin(){
@@ -1129,6 +1130,7 @@ function randomEvent(){
 (function loop(){setTimeout(()=>{randomEvent();loop()},(240+Math.random()*240)*1000)})();
 
 /* ================= Start ================= */
+try{const im=new Image();im.src='lutz.jpg'}catch(e){}
 route();
 pickStore().then(s=>{store=s;setMode(s.mode==='demo'?'demo':'live');
  if(me&&!S.people[me]&&ready&&s.mode!=='claude'){/* Profil existiert nicht mehr */}
